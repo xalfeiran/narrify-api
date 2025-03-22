@@ -5,8 +5,19 @@ const { getTranscript, getVideoMetadata } = require('./transcriptUtils');
 const { OpenAI } = require('openai');
 const cors = require('cors');
 
+const allowedOrigins = ['http://localhost:3000', 'https://www.narrify.cloud', 'https://narrify.cloud'];
+
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman) or allowlisted ones
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 const PORT = process.env.PORT || 5050;
 const MAX_REQUESTS = parseInt(process.env.MAX_REQUESTS_PER_MINUTE) || 10;
@@ -29,16 +40,7 @@ const limiter = rateLimit({
   }
 });
 
-// Middleware to authenticate requests
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  if (!authHeader || authHeader !== `Bearer ${SECRET_TOKEN}`) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-  next();
-}
-
-app.get('/summarize', limiter, authenticateToken, async (req, res) => {
+app.get('/summarize', limiter, async (req, res) => {
   const videoId = req.query.video_id;
   if (!videoId) {
     return res.status(400).json({ error: 'Missing video_id parameter' });
