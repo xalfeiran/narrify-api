@@ -1,11 +1,21 @@
 require('dotenv').config();
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const { getTranscript, getVideoMetadata } = require('./transcriptUtils');
+const { getVideoMetadata } = require('./transcriptUtils');
 const { OpenAI } = require('openai');
 const cors = require('cors');
 
 const allowedOrigins = ['http://localhost:3000', 'https://www.narrify.cloud', 'https://narrify.cloud'];
+
+async function getTranscript(videoId) {
+  try {
+    const transcript = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' });
+    return transcript.map(t => t.text).join('\n');
+  } catch (err) {
+    console.error('[Transcript Error]', videoId, err.message); // Log the cause
+    return null;
+  }
+}
 
 const app = express();
 app.use(cors({
