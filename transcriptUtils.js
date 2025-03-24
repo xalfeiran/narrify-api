@@ -4,10 +4,10 @@ const { YoutubeTranscript } = require('youtube-transcript');
 
 async function getTranscript(videoId) {
   try {
-    const transcript = await YoutubeTranscript.fetchTranscript(videoId);
-    return transcript.map(entry => entry.text).join('\n');
+    const transcript = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' });
+    return transcript.map(t => t.text).join('\n');
   } catch (err) {
-    console.error('Transcript error:', err.message);
+    console.error('[Transcript Error]', videoId, err.message); // Log the cause
     return null;
   }
 }
