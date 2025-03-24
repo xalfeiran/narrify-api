@@ -48,7 +48,7 @@ app.get('/summarize', limiter, async (req, res) => {
 
   const transcript = await getTranscript(videoId);
   if (!transcript) {
-    return res.status(404).json({ error: 'Transcript not available for this video' });
+    return res.status(401).json({ error: 'Transcript not available for this video' });
   }
 
   const { title, channel } = await getVideoMetadata(videoId);
