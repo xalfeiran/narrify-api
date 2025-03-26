@@ -6,7 +6,7 @@ const { getTranscript, getVideoMetadata } = require('./transcriptUtils');
 const { OpenAI } = require('openai');
 const cors = require('cors');
 
-const allowedOrigins = ['http://localhost:3000', 'https://www.narrify.cloud', 'https://narrify.cloud'];
+const allowedOrigins = ['http://localhost:5050', 'https://www.narrify.cloud', 'https://narrify.cloud'];
 
 const app = express();
 app.use(cors({
