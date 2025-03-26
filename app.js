@@ -10,7 +10,7 @@ const allowedOrigins = ['http://localhost:5050', 'https://www.narrify.cloud', 'h
 
 const app = express();
 app.use(cors({
-  origin: ['https://narrify.cloud', 'https://www.narrify.cloud'],
+  origin: allowedOrigins,
   methods: ['GET'],
   allowedHeaders: ['ngrok-skip-browser-warning']
 }));
