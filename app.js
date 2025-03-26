@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const { getTranscript, getVideoMetadata } = require('./transcriptUtils');
 const { OpenAI } = require('openai');
@@ -9,14 +10,9 @@ const allowedOrigins = ['http://localhost:3000', 'https://www.narrify.cloud', 'h
 
 const app = express();
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like Postman) or allowlisted ones
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  }
+  origin: ['https://narrify.cloud', 'https://www.narrify.cloud'],
+  methods: ['GET'],
+  allowedHeaders: ['ngrok-skip-browser-warning']
 }));
 
 const PORT = process.env.PORT || 5050;
