@@ -31,7 +31,7 @@ Este repositorio contiene el backend de **Narrify**, una aplicación que resume 
 ## 📦 Instalación
 
 ```bash
-git clone https://github.com/tuusuario/narrify-api.git
+git clone https://github.com/xalfeiran/narrify-api.git
 cd narrify-api
 npm install
 ```
